@@ -1,0 +1,78 @@
+{% extends 'layouts/layout.html' %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+    <h1> {{title}} </h1>
+
+
+
+<div id="barrasearch">
+
+    <form class="busqueda" method="POST" action="">
+        {% csrf_token %}
+        <input type="text" name="search" placeholder="Introduce tu busqueda">
+        <span class="botonsearch">
+            <input type="submit" value="Buscar">
+        </span>
+    </form>
+
+    {%if messages%}
+        {%for message in messages%}
+            <div class="alert_warning">
+                {{message}}
+            </div>
+        {%endfor%}
+    {%endif%}
+
+</div>
+
+{%if articles_search%}
+    <p>Resultados de la busqueda: {{articles_search.count}}</p>
+{%endif%}
+
+    <div id="boxarticle">
+        {% for article in articles_search   %}
+            {%if article%}
+                <article class="item_article">
+                    {%if article.image != 'null' and article.image.url|length >= 1%}
+                        <div class="image">
+                            <a href="{% url 'articulo' article.id %}"><img src="{{article.image.url}}"></a>
+                        </div>
+                    {%endif%}
+                    <div class="cuerpo">
+                        <div class="principal">
+                            <h2><a href="{% url 'articulo' article.id %}">{{article.title}}</a></h2>
+                            <p class="date">
+                                {{article.created_at}}
+                                por {{article.user}}
+                                {%for categoria in article.categories.all%}
+                                    <a href="{% url 'categorias' categoria.id %}">{{categoria}}</a>
+                                {%endfor%}
+                            </p>
+                            
+                            <p class="contenido">{{article.content|striptags|capfirst|cut:"&nbsp;"|truncatewords:120}}<a href="{% url 'articulo' article.id %}">Leer más</a></p>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </article>
+            {%else%}
+                <p>No hay articulos con esa busqueda</p>
+            {%endif%}
+    
+        {%endfor%}
+    </div>
+
+{%include 'mainapp/recomendadosinicio.html'%}
+
+<div class="banner">
+    <img class="colab" src="{% static 'images/banner.jpg' %}">
+</div>
+
+{%endblock%}
+

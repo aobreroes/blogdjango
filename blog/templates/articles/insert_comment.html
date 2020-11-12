@@ -1,0 +1,19 @@
+{% extends 'layouts/layout.html' %}
+
+{% block title %} Nuevo comentario {% endblock %}
+
+{% block content %}
+
+    <h1>Nuevo comentario</h1>
+
+    <form class="ccomment" method="POST" action="">
+
+        {% csrf_token %}
+
+        <p >{{form.as_p}}</p>
+
+        <input type="submit" class="benviar" value="Enviar comentario"/>
+
+    </form>
+
+{% endblock %}

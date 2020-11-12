@@ -1,0 +1,36 @@
+{% extends 'layouts/layout.html' %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <h1> {{title}} </h1>
+
+    {%if messages%}
+        {%for message in messages%}
+            <div class="alert">
+                {{message}}
+            </div>
+        {%endfor%}
+    {%endif%}
+
+    <div class="alerterrors">
+        {{register_form.errors}}
+    </div>
+
+    <div id="contentform">
+        <form method='post' action="">
+
+            {% csrf_token %}
+            
+            {{register_form.as_p}}
+
+            <input type="submit" value="Registrarse">
+
+        </form>
+
+    </div>
+
+{%endblock%}

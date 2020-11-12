@@ -1,0 +1,61 @@
+{% extends 'layouts/layout.html' %}
+
+{%load static%}
+{% block title %} {{article.title}} {% endblock %}
+
+
+
+{% block content %}
+
+<h1 class="title">{{article.title}} </h1>
+
+
+<div id="cuerpoart">
+
+    {%if article.image != 'null' and article.image.url|length >= 1%}
+        <img src="{{article.image.url}}">
+    {%endif%}
+    {{article.content|safe}}
+
+    <h3>Autor: {{article.user.username}}</h3>
+
+</div>
+
+
+
+
+<div id="comments">
+
+    
+    
+    <p class="contmss">{{numcomments.count}} comentarios</p>
+
+    <div class="listacomments">
+        
+        
+        {%for comment in comments%}
+            
+            {%if comment.article_id == article.id%}
+                
+                <p class="comment"><strong>{{comment.autor}}</strong> {{comment.created_date}} </p>
+                <em><p class="comment2"> {{comment.content}}</p></em></p>
+              
+            {%endif%}
+
+        {%endfor%}
+    
+    </div>
+
+</div>
+
+<div class="enviarcomentario">
+
+    <a class="commentsurl" href="{% url 'comment' article.id%}"><img class="commentsimg" src="{% static 'images/comment.png' %}"/><span class="escribirc">Escribir comentario</span></a>
+
+</div>
+
+
+{%include 'mainapp/recomendados.html'%}     
+
+
+{%endblock%}

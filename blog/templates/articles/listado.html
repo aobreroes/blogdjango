@@ -1,0 +1,29 @@
+
+<div id="boxarticle">
+    {% for article in articles%}
+        <article class="item_article">
+            {%if article.image != 'null' and article.image.url|length >= 1%}
+                <div class="image">
+                    <a href="{% url 'articulo' article.id %}"><img src="{{article.image.url}}"></a>
+                </div>
+            {%endif%}
+            <div class="cuerpo">
+                <div class="principal">
+                    <h2><a href="{% url 'articulo' article.id %}">{{article.title}}</a></h2>
+                    <p class="date">
+                        {{article.created_at}}
+                        por {{article.user}}
+                        {%for categoria in article.categories.all%}
+                            <a href="{% url 'categorias' categoria.id %}">{{categoria}}</a>
+                        {%endfor%}
+                    </p>
+                    
+                    <p class="contenido">{{article.content|striptags|capfirst|cut:"&nbsp;"|truncatewords:120}}<a href="{% url 'articulo' article.id %}">Leer más</a></p>
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </article>
+  
+    {%endfor%}
+  </div>

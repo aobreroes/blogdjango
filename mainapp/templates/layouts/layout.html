@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            
+            {% block title %}
+            <!--Titulo de cada pagina en concreto-->
+            {% endblock %}
+
+        </title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <link rel="icon" type="image/png" href="{% static 'images/icono2.png' %}" />
+    </head>
+    <body>
+        <!--Cabecera de la pagina-->
+        <header>
+            <div id="navsup">
+                <ul class="izq">
+                    <li><a href="{%url 'index'%}">FAQ</a></li>
+                    <li><a href="">Contacto</a></li>
+                </ul>
+                <ul class="der">
+                    <li><a href="https://www.facebook.com/" target="_blank"><img src="{% static 'images/facebook.png' %}"></a></li>
+                    <li><a href=""><img src="{% static 'images/instagram.png' %}"></a></li>
+                </ul>
+            </div>
+            <div id="logo">     
+                <!--logotipo-->
+                <a href="{%url 'index'%}"><img src="{% static 'images/logo.jpg' %}"></a>
+                <a href="{%url 'index'%}"><h1>Sitio Web con Django</h1></a>
+                <a href="{%url 'index'%}"><h5>by Antonio Obrero</h5></a>
+            </div>
+        </header>
+        <nav>
+            <div class="navizq">
+                <ul>
+                    <li><a href="{%url 'index'%}">INICIO</a></li>
+                    <li><a href="{%url 'blog'%}">Blog</a></li>
+                    {%if user.email%}
+                        {%for page in pages%}
+                            <li><a href="{%url 'page' page.2%}">{{page.1}}</a></li>
+                        {%endfor%}
+                    {%endif%}
+                </ul>
+            </div>
+            <div class="navder">    
+                <ul>
+                    {%if request.user.first_name%}
+                        <li><p>Bienvenid@: <strong>{{user.first_name}} {{user.last_name}}</strong> &raquo; </p>
+                        {%if request.user.is_staff%}
+                            <li><a href="/admin" target="_blank"><img src="{% static 'images/gestion.png' %}"/>Panel de administración</a></li>
+                        {%endif%}
+                        <li><a href="{%url 'logout'%}"><img src="{% static 'images/logout.png' %}"/>Cerrar sesión</a></li>
+                    {%else%}
+                        <li><a href="{%url 'login'%}"><img src="{% static 'images/login.png' %}"/>Iniciar sesión</a></li>
+                        <li><a href="{%url 'register'%}"><img src="{% static 'images/register.png' %}"/>Registro</a></li>
+                    {%endif%}
+                </ul>
+            </div>
+        </nav>
+
+        <section>
+            <div id="content">
+                <div class="box">
+                    <!--<h2 class="title">Titulo de prueba</h2>-->
+                    {% block content %}
+                        <!--Codigo que viene de templates-->
+                        <!--<strong>Contenido del bloque original</strong>-->
+                    {% endblock %}
+
+                </div>
+                <aside>
+                    <div class="lateral">
+                        <div class="boxlateral">
+                            <h2>Categorias</h2>
+                            <ul>
+                                {%for categoria in categories%}
+                                    <li><a href="{% url 'categorias' categoria.id %}">{{categoria.name}}</a></li>
+                                {%endfor%}
+                            </ul>
+                            <h2>Post recientes</h2>
+                            <ul>
+                                {%for articulo in articles2%}
+                                    {%if forloop.counter <= 8 %}
+                                        <li><a href="{% url 'articulo' articulo.id %}">{{articulo.title}}</a></li>
+                                    {%endif%}
+                                {%endfor%}
+                            </ul>
+                            <h2>Post populares</h2>
+                            <ul>
+                                {%for articulo in articles2%}
+                                    {%if forloop.counter <= 5 %}
+                                        <li><a href="{% url 'articulo' articulo.id %}">{{articulo.title}}</a></li>
+                                    {%endif%}
+                                {%endfor%}
+                            </ul>
+                            <h3>Comentarios recientes</h3>
+                            <ul>
+                                {%for comment in comments%}
+                                    {%if forloop.counter <= 3 %}
+                                        <li class="msslateral"><p class="msslateraltop"><strong>{{comment.autor}}</strong> en <a href="{% url 'articulo' comment.article_id%}">{{comment.article}}</a></p>
+                                        <em>{{comment.content|truncatewords:5}}<a href="{% url 'articulo' comment.article_id%}">.Leer más</a></em> 
+                                        
+                                    {%endif%}
+                                {%endfor%}
+                            </ul>
+                            <h3>Colaboradores</h3>
+                            <ul>
+                                <li><img class="colab" src="{% static 'images/publi.png' %}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <footer>
+            &copy; Creado por Antonio Obrero - 2020
+        </footer>
+    </body>
+</html>

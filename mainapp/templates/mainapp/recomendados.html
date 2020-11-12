@@ -1,0 +1,23 @@
+<div id="recomendadospost">
+
+    <h3>POST Recomendados</h3>
+                    
+    {% for article in articles %}
+
+        {%if forloop.counter <= 3 %}
+
+            <article class="articulo">
+                 {%if article.image != 'null' and article.image.url|length >= 1%}
+                     <div class="image">
+                         <a href="{% url 'articulo' article.id %}"><img src="{{article.image.url}}"></a>
+                    </div>
+                {%endif%}
+                <h4><a href="{% url 'articulo' article.id %}">{{article.title}}</a></h4><span class="date">{{article.created_at}} por {{article.user}}</span>
+                <p class="extracto">{{article.content|striptags|capfirst|cut:"&nbsp;"|truncatewords:25}}<a href="{% url 'articulo' article.id %}">Leer más</a></p>
+            </article>
+
+        {%endif%}
+        
+    {%endfor%}
+
+</div>
